@@ -90,7 +90,7 @@ void request(String reqLevel) {
   SerialESP8266.println(httpRequest.length());
 
   // waiting for ">" for sending HTTP request
-  if (SerialESP8266.find(">"))
+  if (!SerialESP8266.find(">"))
     return;
 
   logger("Sending HTTP request. . .");

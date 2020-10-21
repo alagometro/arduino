@@ -18,6 +18,7 @@ String secret = "";
 // App settings
 boolean debug = false;
 String level = "0";
+int iterations = 0;
 
 void setup() {
   SerialESP8266.begin(9600);
@@ -29,11 +30,20 @@ void setup() {
 void loop() {
   String sensorLevel = sensor_reading();
 
+  // Updates the level in API if is different than the previous one
   if(sensorLevel != level) {
+    iterations = 0;
     level = sensorLevel;
     request(level);
   }
 
+  // Updates each 5 minutes, used as keep-alive indicator
+  if(iterations == 1 * 60 * 5) {
+    iterations = 0;
+    request(level);
+  }
+
+  iterations++;
   delay(1000);
 }
 
